@@ -10,6 +10,7 @@ and other settings.
 TRAIN_DATA_PATH = "./data/raw/train.csv"  # Path to the training dataset
 TEST_DATA_PATH = "./data/raw/test.csv"    # Path to the test dataset
 RESULTS_PATH = "./data/processed/"        # Directory for processed data and results
+MODEL_PATH = "./models/"                  # Path to save the best model
 
 # Target variable
 TARGET_NAME = "Survived"  # Name of the target variable in the dataset

@@ -8,7 +8,7 @@ import optuna
 from sklearn.model_selection import cross_val_score
 from sklearn.base import clone
 from optuna import Trial
-from typing import Callable, Dict, Any, Tuple
+from typing import Callable, Dict, Any, Tuple, List
 import numpy as np
 import time
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
@@ -16,6 +16,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 import xgboost as xgb
 from sklearn.ensemble import RandomForestClassifier
 import logging
+import pandas as pd
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -234,10 +235,10 @@ def optuna_optimize(
             train_idx = np.random.choice(len(X_train), size=int(0.8*len(X_train)), replace=False)
             val_idx = np.setdiff1d(np.arange(len(X_train)), train_idx)
             
-            X_train_fold = X_train[train_idx]
-            y_train_fold = y_train[train_idx]
-            X_val_fold = X_train[val_idx]
-            y_val_fold = y_train[val_idx]
+            X_train_fold = X_train.iloc[train_idx]
+            y_train_fold = y_train.iloc[train_idx] if isinstance(y_train, pd.Series) else y_train[train_idx]
+            X_val_fold = X_train.iloc[val_idx]
+            y_val_fold = y_train.iloc[val_idx] if isinstance(y_train, pd.Series) else y_train[val_idx]
             
             model.fit(X_train_fold, y_train_fold)
             y_pred = model.predict(X_val_fold)
